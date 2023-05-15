@@ -1,2 +1,0 @@
-# fedi linker
- bootstraps federation
