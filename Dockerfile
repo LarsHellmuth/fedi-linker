@@ -8,15 +8,15 @@ RUN --mount=type=cache,target=/go/pkg/mod/ \
 
 FROM redis:latest AS redis
 WORKDIR /cache
-COPY --link /cache .
+COPY --link ./cache .
 
 FROM busybox:latest
 WORKDIR /app
 VOLUME /app/data
 COPY --link --from=golang /server/bin/run ./server/bin/run
 COPY --link --from=redis /usr/local/bin/redis-server ./cache/redis-server
-COPY --link --from=redis /usr/local/bin/redis-cli ./cache/redis-cli
 COPY --link --from=redis /cache ./cache
+
 # redis-server dependencies
 COPY --link --from=redis \
 /lib/x86_64-linux-gnu/libdl.so.2 \
